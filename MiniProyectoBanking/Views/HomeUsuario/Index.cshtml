@@ -1,0 +1,81 @@
+﻿@using MiniProyectoBanking.Core.Application.ViewModels.Usuarios;
+
+@model ClientHomeViewModel
+
+@{
+    ViewData["Title"] = "Home";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-4">
+        @if (TempData["ErrorMensaje"] != null)
+        {
+            <div class="alert alert-danger">
+                @TempData["ErrorMensaje"]
+            </div>
+        }
+
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1>Bienvenido, @Model.UsuarioViewModel.Nombre!</h1>
+            <div>
+                <a href="@Url.Action("Index", "Home")" class="btn btn-primary">Home</a>
+                <a href="@Url.Action("Pagos", "Payment")" class="btn btn-secondary">Pagos</a>
+                <a href="@Url.Action("Index", "Beneficiary")" class="btn btn-info">Beneficiarios</a>
+                <a href="@Url.Action("CashAdvance", "Avances de efectivo")" class="btn btn-warning">Avance de efectivo</a>
+                <a href="@Url.Action("Transfer", "Transferencias")" class="btn btn-success">Transferencia</a>
+                <a href="@Url.Action("Logout", "Account")" class="btn btn-danger">Salir</a>
+            </div>
+        </div>
+
+        <h1 class="mb-4">Productos del Cliente</h1>
+        <div class="row">
+            @if (Model.Productos != null && Model.Productos.Count > 0)
+            {
+                @foreach (var product in Model.Productos)
+                {
+                    <div class="col-md-4">
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <h5 class="card-title">@product.TipoCuenta</h5>
+                                <p class="card-text">
+                                    <strong>Número de Cuenta:</strong> @product.NumeroCuenta<br>
+                                    <strong>Es Principal:</strong> @(product.EsPrincipal ? "Sí" : "No")<br>
+                                    @if (product.TipoCuenta == "Cuenta de ahorro" || product.TipoCuenta == "Cuenta corriente")
+                                    {
+                                        <strong>Balance:</strong> @product.Monto
+                                    }
+                                    else if (product.TipoCuenta == "Tarjeta de crédito")
+                                    {
+                                        <strong>Límite:</strong> @product.Limite
+
+                                        <br>
+                                        <strong>Deuda:</strong> @product.Deuda
+                                    }
+                                    else if (product.TipoCuenta == "Préstamo")
+                                    {
+                                        <strong>Deuda:</strong> @product.Deuda
+                                    }
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <p>No hay productos disponibles.</p>
+            }
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,31 @@
+﻿@model MiniProyectoBanking.Core.Application.ViewModels.Productos.SaveProductoViewModel
+
+@{
+    ViewData["Title"] = "Eliminar producto";
+    var clienteId = ViewBag.ClienteId;
+}
+
+<div class="row">
+    <div class="col-6 offset-3">
+        <div class="card">
+            <div class="card-header bg-dark text-light">
+                <h4>¿Está seguro que desea eliminar este producto?</h4>
+            </div>
+            <div class="card-body">
+                @if (ViewBag.ErrorMessage != null)
+                {
+                    <div class="alert alert-danger">
+                        @ViewBag.ErrorMessage
+                    </div>
+                }
+                <form method="post" asp-controller="Producto" asp-action="ConfirmDelete">
+
+                    <input type="hidden" asp-for="Id" />
+
+                    <button type="submit" class="btn btn-danger">Aceptar</button>
+                    <a asp-controller="Producto" asp-action="Index" asp-route-clienteId="@clienteId" class="btn btn-secondary">Cancelar</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

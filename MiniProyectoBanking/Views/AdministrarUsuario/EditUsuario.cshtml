@@ -1,0 +1,84 @@
+﻿@model MiniProyectoBanking.Core.Application.ViewModels.Usuarios.EditUsuarioViewModel
+
+@{
+    ViewData["Title"] = "Editar usuario";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-6 offset-3">
+            <div class="card">
+                <div class="card-header bg-dark text-light">
+                    <h4>Editando usuario</h4>
+                </div>
+                <div class="card-body">
+                    <form method="post" enctype="multipart/form-data" asp-controller="AdministrarUsuario" asp-action="EditUsuario">
+                        <div class="mb-3">
+                            <label asp-for="Tipo" class="form-label">Tipo: </label>
+                            <input asp-for="Tipo" class="form-control" readonly />
+                            <span asp-validation-for="Tipo" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="Nombre" class="form-label">Nombre: </label>
+                            <input asp-for="Nombre" class="form-control" />
+                            <span asp-validation-for="Nombre" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="Apellido" class="form-label">Apellido: </label>
+                            <input asp-for="Apellido" class="form-control" />
+                            <span asp-validation-for="Apellido" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="Correo" class="form-label">Correo: </label>
+                            <input asp-for="Correo" class="form-control" />
+                            <span asp-validation-for="Correo" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="Cedula" class="form-label">Cédula: </label>
+                            <input asp-for="Cedula" class="form-control" type="number" pattern="[0-9]+([\.,][0-9]+)?" title="Ingrese un número válido." />
+                            <span asp-validation-for="Cedula" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="NombreUsuario" class="form-label">Nombre de usuario: </label>
+                            <input asp-for="NombreUsuario" class="form-control" />
+                            <span asp-validation-for="NombreUsuario" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="Contraseña" class="form-label">Contraseña: </label>
+                            <input asp-for="Contraseña" class="form-control" />
+                            <span asp-validation-for="Contraseña" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="ConfirmarContraseña" class="form-label">Confirme la contraseña: </label>
+                            <input asp-for="ConfirmarContraseña" class="form-control" />
+                            <span asp-validation-for="ConfirmarContraseña" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3" id="montoDiv" style="display: none;">
+                            <label asp-for="MontoAdicional" class="form-label">Monto Adicional: </label>
+                            <input asp-for="MontoAdicional" class="form-control" value="0" type="number" pattern="[0-9]+([\.,][0-9]+)?" title="Ingrese un número válido." />
+                        </div>
+
+                        <input type="hidden" asp-for="Id" />
+                        <input type="hidden" asp-for="Estado" value="true" />
+
+                        <button type="submit" class="btn btn-success">Guardar</button>
+                        <a asp-controller="AdministrarUsuario" asp-action="Index" class="btn btn-secondary">Volver atrás</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var tipo = document.getElementById('Tipo').value;
+            var montoDiv = document.getElementById('montoDiv');
+            if (tipo === 'Cliente') {
+                montoDiv.style.display = 'block';
+            }
+        });
+    </script>
+}

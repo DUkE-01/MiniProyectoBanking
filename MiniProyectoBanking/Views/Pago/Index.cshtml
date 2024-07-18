@@ -1,0 +1,95 @@
+﻿@using MiniProyectoBanking.Core.Application.ViewModels.Pagos
+@model PagosViewModel
+
+@{
+    ViewData["Title"] = "Pagos";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-4">
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <div class="alert alert-success">
+                @TempData["SuccessMessage"]
+            </div>
+        }
+        @if (TempData["ErrorMessage"] != null)
+        {
+            <div class="alert alert-danger">
+                @TempData["ErrorMessage"]
+            </div>
+        }
+
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1>Pagos</h1>
+            <a href="@Url.Action("Index", "HomeUsuario")" class="btn btn-primary">Volver al Home</a>
+        </div>
+
+        <div class="mb-4">
+            <h2>Realizar un nuevo pago</h2>
+            <form asp-action="RealizarPago" method="post">
+                <div class="form-group">
+                    <label for="TipoPago">Tipo de Pago</label>
+                    <select class="form-control" id="TipoPago" name="TipoPago" required>
+                        <option value="">Seleccione un tipo de pago</option>
+                        <option value="Servicio">Servicio</option>
+                        <option value="Crédito">Crédito</option>
+                        <option value="Otro">Otro</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="Monto">Monto</label>
+                    <input type="number" class="form-control" id="Monto" name="Monto" required />
+                </div>
+                <div class="form-group">
+                    <label for="Descripcion">Descripción</label>
+                    <textarea class="form-control" id="Descripcion" name="Descripcion" rows="3"></textarea>
+                </div>
+                <button type="submit" class="btn btn-success">Realizar Pago</button>
+            </form>
+        </div>
+
+        <div>
+            <h2>Historial de Pagos</h2>
+            @if (Model.Pagos != null && Model.Pagos.Count > 0)
+            {
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Fecha</th>
+                            <th>Tipo de Pago</th>
+                            <th>Monto</th>
+                            <th>Descripción</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var pago in Model.Pagos)
+                        {
+                            <tr>
+                                <td>@pago.Fecha.ToString("dd/MM/yyyy")</td>
+                                <td>@pago.TipoPago</td>
+                                <td>@pago.Monto.ToString("C")</td>
+                                <td>@pago.Descripcion</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <p>No hay pagos registrados.</p>
+            }
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

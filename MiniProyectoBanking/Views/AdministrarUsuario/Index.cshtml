@@ -1,0 +1,75 @@
+﻿@model List<MiniProyectoBanking.Core.Application.ViewModels.Usuarios.UsuarioViewModel>
+
+@{
+    ViewData["Title"] = "Administrador de usuarios";
+    var administradores = Model?.Where(u => u.Tipo == "Admin").ToList();
+    var clientes = Model?.Where(u => u.Tipo == "Cliente").ToList();
+}
+
+<div class="container-fluid">
+    <div class="col-4 pb-2">
+        <a asp-controller="AdministrarUsuario" asp-action="SaveUsuario" class="btn btn-success">Crear nuevo usuario</a>
+    </div>
+
+    <h3>Lista de administradores</h3>
+
+    <div class="row">
+        @if (administradores == null || administradores.Count == 0)
+        {
+            <p>No hay administradores.</p>
+        }
+        else
+        {
+            @foreach (MiniProyectoBanking.Core.Application.ViewModels.Usuarios.UsuarioViewModel item in administradores)
+            {
+                <div class="col-md-12 mb-3">
+                    <div class="card shadow-sm">
+                        <div class="card-body d-flex align-items-center">
+                            <div>
+                                <h6>Nombre completo:</h6>
+                                <h4>@item.Nombre @item.Apellido</h4>
+                                <p><strong>Cédula:</strong> @item.Cedula</p>
+                                <p><strong>Estado:</strong> <strong><span class="font-weight-bold @(item.Estado ? "text-success" : "text-danger")">@Html.Raw(item.Estado ? "Activo" : "Inactivo")</span></strong></p>
+                                <div class="d-flex">
+                                    <a asp-controller="AdministrarUsuario" asp-action="EditUsuario" asp-route-id="@item.Id" class="btn btn-warning mx-2">Editar</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+
+    <h3>Lista de clientes</h3>
+
+    <div class="row">
+        @if (clientes == null || clientes.Count == 0)
+        {
+            <p>No hay clientes.</p>
+        }
+        else
+        {
+            @foreach (MiniProyectoBanking.Core.Application.ViewModels.Usuarios.UsuarioViewModel item in clientes)
+            {
+                <div class="col-md-12 mb-3">
+                    <div class="card shadow-sm">
+                        <div class="card-body d-flex align-items-center">
+                            <div>
+                                <h6>Nombre completo:</h6>
+                                <h4>@item.Nombre @item.Apellido</h4>
+                                <p><strong>Cédula:</strong> @item.Cedula</p>
+                                <p><strong>Estado:</strong> <strong><span class="font-weight-bold @(item.Estado ? "text-success" : "text-danger")">@Html.Raw(item.Estado ? "Activo" : "Inactivo")</span></strong></p>
+                                <div class="d-flex">
+                                    <a asp-controller="AdministrarUsuario" asp-action="EditUsuario" asp-route-id="@item.Id" class="btn btn-warning mx-2">Editar</a>
+                                    <a asp-controller="AdministrarUsuario" asp-action="Activacion" asp-route-id="@item.Id" class="btn btn-danger mx-2">Activar/Desactivar</a>
+                                    <a asp-controller="Producto" asp-action="Index" asp-route-clienteId="@item.Id" class="btn btn-success mx-2">Productos</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+</div>

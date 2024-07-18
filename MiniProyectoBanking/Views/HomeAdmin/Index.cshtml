@@ -1,0 +1,26 @@
+﻿@{
+    ViewData["Title"] = "Home";
+}
+
+@if (TempData["ErrorMensaje"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["ErrorMensaje"]
+    </div>
+}
+
+<h3>Estadísticas de la aplicación</h3>
+
+<div class="row">
+    <div class="col-md-12 mb-3">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="mb-4">Total de transacciones es: <span class="text-success">@ViewData["TotalTransacciones"]</span></h4>
+                <h4 class="mb-4">Total de transacciones hechas el día de hoy: <span class="text-success">@ViewData["TransaccionesHoy"]</span></h4>
+                <h4 class="mb-4">Total de usuarios activos: <span class="text-success">@ViewData["TotalUsuariosActivos"]</span></h4>
+                <h4 class="mb-4">Total de usuarios inactivos: <span class="text-success">@ViewData["TotalUsuariosInactivos"]</span></h4>
+                <h4 class="mb-3">Total de productos: <span class="text-success">@ViewData["TotalProductos"]</span></h4>
+            </div>
+        </div>
+    </div>
+</div>

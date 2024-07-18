@@ -1,0 +1,25 @@
+﻿@model MiniProyectoBanking.Core.Application.ViewModels.Usuarios.EditUsuarioViewModel
+
+@{
+    ViewData["Title"] = "Activar/Desactivar Usuario";
+}
+
+<div class="row">
+    <div class="col-6 offset-3">
+        <div class="card">
+            <div class="card-header bg-dark text-light">
+                <h4>¿Está seguro que desea @(@Model.Estado ? "desactivar" : "activar") al usuario @Model.Nombre @Model.Apellido?</h4>
+            </div>
+            <div class="card-body">
+                <form method="post" asp-controller="AdministrarUsuario" asp-action="Activacion">
+                    <input type="hidden" asp-for="Id" />
+                    <input type="hidden" asp-for="Estado" />
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-danger">Aceptar</button>
+                        <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

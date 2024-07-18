@@ -1,0 +1,52 @@
+﻿@model List<MiniProyectoBanking.Core.Application.ViewModels.Productos.ProductoViewModel>
+
+@{
+    ViewData["Title"] = "Administrador de productos";
+}
+
+<div class="container-fluid">
+    <div class="col-4 pb-2">
+        <a asp-controller="Producto" asp-action="SaveProducto" asp-route-clienteId="@Model.First().ClienteId" class="btn btn-success">Crear nuevo producto</a>
+    </div>
+
+    <h3>Lista de productos</h3>
+
+    <div class="row">
+        @foreach (MiniProyectoBanking.Core.Application.ViewModels.Productos.ProductoViewModel item in Model)
+        {
+            <div class="col-md-12 mb-3">
+                <div class="card shadow-sm">
+                    <div class="card-body d-flex align-items-center">
+                        <div>
+                            <h6>Tipo de cuenta:</h6>
+                            <h4>@item.TipoCuenta</h4>
+                            <p><strong>Numero de cuenta:</strong> @item.NumeroCuenta</p>
+
+                            @if (item.TipoCuenta == "Cuenta de ahorro")
+                            {
+                                <p><strong>Monto actual:</strong> @item.Monto</p>
+                                <p><strong>Deuda:</strong> @(item.Deuda.HasValue ? item.Deuda.ToString() : "No tiene")</p>
+                            }
+                            else if (item.TipoCuenta == "Tarjeta de credito")
+                            {
+                                <p><strong>Limite:</strong> @item.Limite</p>
+                                <p><strong>Deuda:</strong> @(item.Deuda.HasValue ? item.Deuda.ToString() : "No tiene")</p>
+                            }
+                            else if (item.TipoCuenta == "Prestamo")
+                            {
+                                <p><strong>Deuda:</strong> @(item.Deuda.HasValue ? item.Deuda.ToString() : "No tiene")</p>
+                            }
+
+                            <div class="d-flex">
+                                <form method="post" asp-controller="Producto" asp-action="DeleteProducto">
+                                    <input type="hidden" name="id" value="@item.Id" />
+                                    <button type="submit" class="btn btn-danger mx-2">Eliminar</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

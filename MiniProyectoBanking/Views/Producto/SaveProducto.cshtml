@@ -1,0 +1,126 @@
+﻿@model MiniProyectoBanking.Core.Application.ViewModels.Productos.SaveProductoViewModel
+
+@{
+    ViewData["Title"] = "Nuevo producto";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-6 offset-3">
+            <div class="card">
+                <div class="card-header bg-dark text-light">
+                    <h4>Creando un nuevo producto</h4>
+                </div>
+                <div class="card-body">
+                    @if (ViewBag.ErrorMessage != null)
+                    {
+                        <div class="alert alert-danger" role="alert">
+                            @ViewBag.ErrorMessage
+                        </div>
+                    }
+
+                    <form id="productoForm" method="post" enctype="multipart/form-data" asp-controller="Producto" asp-action="SaveProducto">
+
+                        <div class="mb-3">
+                            <label asp-for="TipoCuenta" class="form-label">Tipo de producto: </label>
+                            <select asp-for="TipoCuenta" class="form-control" id="tipoSelect">
+                                <option value="Cuenta de ahorro">Cuenta de ahorro</option>
+                                <option value="Tarjeta de credito">Tarjeta de crédito</option>
+                                <option value="Prestamo">Préstamo</option>
+                            </select>
+                            <span asp-validation-for="TipoCuenta" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3" id="montoDiv" style="display: none;">
+                            <label asp-for="Monto" class="form-label">Monto Inicial: </label>
+                            <input asp-for="Monto" class="form-control" type="number" pattern="[0-9]+([\.,][0-9]+)?" title="Ingrese un número válido." />
+                            <span asp-validation-for="Monto" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3" id="limiteDiv" style="display: none;">
+                            <label asp-for="Limite" class="form-label">Límite de la tarjeta: </label>
+                            <input asp-for="Limite" class="form-control" type="number" pattern="[0-9]+([\.,][0-9]+)?" title="Ingrese un número válido." />
+                            <span asp-validation-for="Limite" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3" id="deudaDiv" style="display: none;">
+                            <label asp-for="Deuda" class="form-label">Préstamo a tomar: </label>
+                            <input asp-for="Deuda" class="form-control" type="number" pattern="[0-9]+([\.,][0-9]+)?" title="Ingrese un número válido." />
+                            <span asp-validation-for="Deuda" class="text-danger"></span>
+                        </div>
+
+                        <input type="hidden" asp-for="Id" />
+                        <input type="hidden" asp-for="ClienteId" value="@Model.ClienteId" />
+                        <input type="hidden" asp-for="EsPrincipal" value="false" />
+                        <input type="hidden" asp-for="NumeroCuenta" value="@Model.NumeroCuenta" />
+
+                        <button type="submit" class="btn btn-success">Guardar</button>
+                        <a asp-controller="Producto" asp-action="Index" class="btn btn-secondary" asp-route-clienteId="@Model.ClienteId">Volver atrás</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+      
+            mostrarCampoSegunTipoCuenta($('#tipoSelect').val());
+
+            $('#tipoSelect').change(function () {
+                mostrarCampoSegunTipoCuenta($(this).val());
+            });
+
+            function mostrarCampoSegunTipoCuenta(tipoCuenta) {
+                $('#montoDiv, #limiteDiv, #deudaDiv').hide(); 
+
+                if (tipoCuenta === 'Cuenta de ahorro') {
+                    $('#montoDiv').show();
+                    $('#limiteDiv input, #deudaDiv input').val(''); 
+                } else if (tipoCuenta === 'Tarjeta de credito') {
+                    $('#limiteDiv').show();
+                    $('#montoDiv input, #deudaDiv input').val('');
+                } else if (tipoCuenta === 'Prestamo') {
+                    $('#deudaDiv').show();
+                    $('#montoDiv input, #limiteDiv input').val('');
+                }
+            }
+
+            $('#productoForm').submit(function (event) {
+                var tipoSeleccionado = $('#tipoSelect').val();
+                var isValid = true;
+                var errorMessage = '';
+
+                if (tipoSeleccionado === 'Cuenta de ahorro') {
+                    var monto = $('#Monto').val();
+                    if (monto === '' || parseFloat(monto) < 0) {
+                        errorMessage = 'Por favor ingrese un monto válido para la cuenta de ahorro.';
+                        isValid = false;
+                    }
+                } else if (tipoSeleccionado === 'Tarjeta de credito') {
+                    var limite = $('#Limite').val();
+                    if (limite === '' || parseFloat(limite) <= 12499) {
+                        errorMessage = 'Por favor ingrese un límite válido para la tarjeta de crédito, recuerde que el minimo es 12,500 pesos.';
+                        isValid = false;
+                    }
+                } else if (tipoSeleccionado === 'Prestamo') {
+                    var deuda = $('#Deuda').val();
+                    if (deuda === '' || parseFloat(deuda) <= 9999) {
+                        errorMessage = 'Por favor ingrese una deuda válida para el préstamo, recuerde que el prestamo minimo es de 10,000 pesos.';
+                        isValid = false;
+                    }
+                }
+
+                if (!isValid) {
+                    event.preventDefault();
+                    if ($('#errorDiv').length) {
+                        $('#errorDiv').remove();
+                    }
+                    $('#productoForm').prepend('<div id="errorDiv" class="alert alert-danger" role="alert">' + errorMessage + '</div>');
+                }
+            });
+        });
+    </script>
+}
