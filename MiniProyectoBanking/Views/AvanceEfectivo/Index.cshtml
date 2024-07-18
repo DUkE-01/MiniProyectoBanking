@@ -1,5 +1,77 @@
-﻿@{
-    ViewData["Title"] = "Avances de efectivo";
+﻿@model MiniProyectoBanking.Core.Application.ViewModels.AvancesEfectivo.AvancesEfectivoViewModel
+
+@{
+    ViewData["Title"] = "Avances de Efectivo";
 }
 
-<h3>Avances de efectivo</h3>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-4">
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <div class="alert alert-success">
+                @TempData["SuccessMessage"]
+            </div>
+        }
+
+        @if (TempData["ErrorMessage"] != null)
+        {
+            <div class="alert alert-danger">
+                @TempData["ErrorMessage"]
+            </div>
+        }
+
+        <h1 class="mb-4">Avances de Efectivo</h1>
+        <div class="row">
+            @if (Model.AvancesEfectivo != null && Model.AvancesEfectivo.Count > 0)
+            {
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Monto</th>
+                            <th>Fecha</th>
+                            <th>Cuenta Origen</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var avance in Model.AvancesEfectivo)
+                        {
+                            <tr>
+                                <td>@avance.Monto</td>
+                                <td>@avance.Fecha.ToString("dd/MM/yyyy")</td>
+                                <td>@avance.CuentaOrigen.NumeroCuenta</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <p>No hay avances de efectivo disponibles.</p>
+            }
+        </div>
+
+        <h2 class="mt-5">Realizar Avance de Efectivo</h2>
+        <form asp-action="RealizarAvanceEfectivo" method="post">
+            <div class="form-group">
+                <label for="Monto">Monto</label>
+                <input type="number" class="form-control" id="Monto" name="Monto" step="0.01" required>
+            </div>
+            <div class="form-group">
+                <label for="CuentaOrigenId">Cuenta Origen</label>
+                <input type="number" class="form-control" id="CuentaOrigenId" name="CuentaOrigenId" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Realizar Avance de Efectivo</button>
+        </form>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

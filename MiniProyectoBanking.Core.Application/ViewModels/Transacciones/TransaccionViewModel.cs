@@ -9,6 +9,7 @@ namespace MiniProyectoBanking.Core.Application.ViewModels.Transacciones
 {
     public class TransaccionViewModel
     {
+        public List<TransaccionViewModel> Transacciones { get; set; }
         public int Id { get; set; }
         public string Tipo { get; set; }
         public decimal Monto { get; set; }

@@ -1,5 +1,89 @@
-﻿@{
-    ViewData["Title"] = "Transferencias";
+﻿@model MiniProyectoBanking.Core.Application.ViewModels.Transacciones.TransaccionesViewModel
+
+@{
+    ViewData["Title"] = "Transacciones";
 }
 
-<h3>Transferencias</h3>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-4">
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <div class="alert alert-success">
+                @TempData["SuccessMessage"]
+            </div>
+        }
+
+        @if (TempData["ErrorMessage"] != null)
+        {
+            <div class="alert alert-danger">
+                @TempData["ErrorMessage"]
+            </div>
+        }
+
+        <h1 class="mb-4">Transacciones</h1>
+        <div class="row">
+            @if (Model.Transacciones != null && Model.Transacciones.Count > 0)
+            {
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Tipo</th>
+                            <th>Monto</th>
+                            <th>Fecha</th>
+                            <th>Cuenta Origen</th>
+                            <th>Cuenta Destino</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var transaccion in Model.Transacciones)
+                        {
+                            <tr>
+                                <td>@transaccion.Tipo</td>
+                                <td>@transaccion.Monto</td>
+                                <td>@transaccion.Fecha.ToString("dd/MM/yyyy")</td>
+                                <td>@transaccion.CuentaOrigen.NumeroCuenta</td>
+                                <td>@transaccion.CuentaDestino.NumeroCuenta</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <p>No hay transacciones disponibles.</p>
+            }
+        </div>
+
+        <h2 class="mt-5">Realizar Transacción</h2>
+        <form asp-action="RealizarTransaccion" method="post">
+            <div class="form-group">
+                <label for="Tipo">Tipo</label>
+                <input type="text" class="form-control" id="Tipo" name="Tipo" required>
+            </div>
+            <div class="form-group">
+                <label for="Monto">Monto</label>
+                <input type="number" class="form-control" id="Monto" name="Monto" step="0.01" required>
+            </div>
+            <div class="form-group">
+                <label for="CuentaOrigenId">Cuenta Origen</label>
+                <input type="number" class="form-control" id="CuentaOrigenId" name="CuentaOrigenId" required>
+            </div>
+            <div class="form-group">
+                <label for="CuentaDestinoId">Cuenta Destino</label>
+                <input type="number" class="form-control" id="CuentaDestinoId" name="CuentaDestinoId" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Realizar Transacción</button>
+        </form>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

@@ -1,4 +1,5 @@
-﻿using MiniProyectoBanking.Core.Domain.Entities;
+﻿using MiniProyectoBanking.Core.Application.ViewModels.Pagos;
+using MiniProyectoBanking.Core.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,7 @@ namespace MiniProyectoBanking.Core.Application.ViewModels.Usuarios
 {
     public class UsuarioViewModel
     {
+        public List<PagoViewModel> Usuarios { get; set; }
         public int Id { get; set; }
         public string Nombre { get; set; }
         public string Apellido { get; set; }

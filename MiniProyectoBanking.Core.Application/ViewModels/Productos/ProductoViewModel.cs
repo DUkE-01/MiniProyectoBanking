@@ -1,4 +1,5 @@
-﻿using MiniProyectoBanking.Core.Domain.Entities;
+﻿using MiniProyectoBanking.Core.Application.ViewModels.Pagos;
+using MiniProyectoBanking.Core.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,7 @@ namespace MiniProyectoBanking.Core.Application.ViewModels.Productos
 {
     public class ProductoViewModel
     {
+        public List<PagoViewModel> Productos { get; set; }
         public int Id { get; set; }
         public string NumeroCuenta { get; set; }
         public string TipoCuenta { get; set; }

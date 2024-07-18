@@ -75,5 +75,6 @@ namespace MiniProyectoBanking.Infrastructure.Persistence.Contexts
 
             #endregion
         }
+
     }
 }

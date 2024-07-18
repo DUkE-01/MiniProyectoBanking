@@ -9,6 +9,7 @@ namespace MiniProyectoBanking.Core.Application.ViewModels.Beneficiarios
 {
     public class BeneficiarioViewModel
     {
+        public List<BeneficiarioViewModel> Beneficiarios { get; set; }
         public int Id { get; set; }
         public string Nombre { get; set; }
         public string Apellido { get; set; }
